@@ -1,6 +1,7 @@
 export interface BlogType {
-  _id: number;
+  _id: string;
   title: string;
   excerpt: string;
   description: string;
+  slug: string;
 }
