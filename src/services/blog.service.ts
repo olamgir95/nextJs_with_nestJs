@@ -1,3 +1,4 @@
+import { FormValues } from "@/components/form/form.props";
 import { BlogType } from "@/interfaces/blog.interface";
 import axios from "axios";
 
@@ -41,5 +42,13 @@ export const BlogService = {
     );
 
     return status;
+  },
+
+  async createBlog(dataForm: FormValues) {
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_DOMAIN_API}/blog`,
+      dataForm
+    );
+    return data;
   },
 };

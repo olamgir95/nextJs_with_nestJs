@@ -18,11 +18,11 @@ const BlogCard = ({ item }: BlogCardProps) => {
     }
   };
   return (
-    <div className="col" key={item._id}>
+    <div className="col">
       <div className="card shadow-sm">
         <div className="card-body">
           <h5 className="card-title">{item.title}</h5>
-          <p className="card-text">{item.excerpt}</p>
+          <p className="card-text">{item.description}</p>
           <div className="d-flex justify-content-between align-items-center">
             <div className="btn-group">
               <button
