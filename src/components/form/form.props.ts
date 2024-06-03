@@ -5,9 +5,9 @@ export interface FormProps {
 }
 
 export interface FormValues {
-  title: string;
-  excerpt: string;
-  description: string;
+  title?: string;
+  excerpt?: string;
+  description?: string;
 }
 
 export interface ErrorType extends Error {

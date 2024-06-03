@@ -35,6 +35,7 @@ const BlogCard = ({ item }: BlogCardProps) => {
               <button
                 type="button"
                 className="btn btn-sm btn-outline-secondary"
+                onClick={() => router.push(`/edit/${item.slug}`)}
               >
                 Edit
               </button>

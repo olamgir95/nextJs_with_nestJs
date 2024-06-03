@@ -25,7 +25,9 @@ const DetailedBlog: NextPage<DetailedBlogPageProps> = ({ blog }) => {
 
 export default DetailedBlog;
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps<
+  DetailedBlogPageProps
+> = async ({ query }) => {
   const blog = await BlogService.getBlogsBySlug(query.slug as string);
   return {
     props: { blog },

@@ -51,4 +51,12 @@ export const BlogService = {
     );
     return data;
   },
+
+  async editBlog(dataForm: FormValues, id: string) {
+    const { data } = await axios.patch(
+      `${process.env.NEXT_PUBLIC_DOMAIN_API}/blog/${id}`,
+      dataForm
+    );
+    return data;
+  },
 };

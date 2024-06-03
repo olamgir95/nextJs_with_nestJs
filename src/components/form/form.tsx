@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ErrorType, FormProps, FormValues } from "./form.props";
 import { useRouter } from "next/router";
 
@@ -18,13 +18,21 @@ const Form = ({ onSubmit, values, sectionTitle }: FormProps) => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await onSubmit(formValue);
+      await onSubmit(formValue);
       router.push("/");
     } catch (err) {
       const error = err as ErrorType;
       console.log(error.response.data.message);
     }
   };
+
+  useEffect(() => {
+    setFormValue({
+      title: values?.title,
+      excerpt: values?.excerpt,
+      description: values?.description,
+    });
+  }, [router.query.slug]);
 
   return (
     <div>
@@ -38,7 +46,7 @@ const Form = ({ onSubmit, values, sectionTitle }: FormProps) => {
               id="floatingInput"
               placeholder="Title"
               name="title"
-              value={values?.title}
+              value={formValue.title}
               onChange={onChange}
             />
             <label htmlFor="floatingInput"> Title</label>
@@ -50,7 +58,7 @@ const Form = ({ onSubmit, values, sectionTitle }: FormProps) => {
               id="floatingInput"
               placeholder="Excerpt"
               name="excerpt"
-              value={values?.excerpt}
+              value={formValue.excerpt}
               onChange={onChange}
             />
             <label htmlFor="floatingInput"> Excerpt</label>
@@ -58,17 +66,17 @@ const Form = ({ onSubmit, values, sectionTitle }: FormProps) => {
           <div className="form-floating">
             <textarea
               name="description"
-              value={values?.description}
+              value={formValue.description}
               className="form-control"
               id="floatingTextarea2"
               placeholder="Leave a comment here"
-              style={{ height: "100px" }}
+              style={{ height: "200px" }}
               onChange={onChange}
             />
-            <label htmlFor="floatingInput"> Title</label>
+            <label htmlFor="floatingInput"> Description</label>
           </div>
-          <button className="btn btn-primary w-100 py-2" type="submit">
-            Create
+          <button className="btn btn-primary w-100 py-2 mt-2" type="submit">
+            Submit
           </button>
         </form>
       </main>
