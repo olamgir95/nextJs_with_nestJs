@@ -3,6 +3,8 @@ import { ErrorType, FormProps, FormValues } from "./form.props";
 import { useRouter } from "next/router";
 
 const Form = ({ onSubmit, values, sectionTitle }: FormProps) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string[]>([]);
   const [formValue, setFormValue] = useState<FormValues>({
     title: "",
     excerpt: "",
@@ -17,13 +19,25 @@ const Form = ({ onSubmit, values, sectionTitle }: FormProps) => {
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await onSubmit(formValue);
       router.push("/");
     } catch (err) {
       const error = err as ErrorType;
-      console.log(error.response.data.message);
+      console.log(error);
+
+      setLoading(false);
+      if (error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError([error.message]);
+      }
     }
+  };
+
+  const removeErrorItem = (item: string) => {
+    setError(error.filter((err) => err != item));
   };
 
   useEffect(() => {
@@ -38,6 +52,23 @@ const Form = ({ onSubmit, values, sectionTitle }: FormProps) => {
     <div>
       <h4 className="text-center">{sectionTitle}</h4>
       <main className="form-signin w-50 text-black m-auto">
+        {error.length &&
+          error.map((err, index) => (
+            <div
+              className="alert alert-danger alert-dismissible fade show"
+              role="alert"
+              key={index}
+            >
+              <div>{err}</div>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+                onClick={() => removeErrorItem(err)}
+              ></button>
+            </div>
+          ))}
         <form onSubmit={submitHandler}>
           <div className="form-floating">
             <input
@@ -75,8 +106,12 @@ const Form = ({ onSubmit, values, sectionTitle }: FormProps) => {
             />
             <label htmlFor="floatingInput"> Description</label>
           </div>
-          <button className="btn btn-primary w-100 py-2 mt-2" type="submit">
-            Submit
+          <button
+            disabled={loading}
+            className="btn btn-primary w-100 py-2 mt-2"
+            type="submit"
+          >
+            {loading ? "Loading..." : "Submit"}
           </button>
         </form>
       </main>

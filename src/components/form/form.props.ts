@@ -13,7 +13,7 @@ export interface FormValues {
 export interface ErrorType extends Error {
   response: {
     data: {
-      message: string;
+      message: string[];
     };
   };
 }
